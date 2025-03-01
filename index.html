@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Viewer with Copy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-6">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold mb-4">PHP Snippet Code</h1>
+
+        <div class="relative bg-gray-800 p-4 rounded-lg shadow-lg mt-4">
+            <button class="absolute top-2 right-2 bg-gray-700 text-white px-3 py-1 rounded text-sm hover:bg-gray-600" onclick="copyToClipboard('phpCode')">Copy</button>
+            <pre id="phpCode" class="overflow-auto"><code class="language-php">&lt;?php
+// Register the spacer shortcode
+function custom_spacer_shortcode($atts) {
+    // Default attributes
+    $atts = shortcode_atts(array(
+        'height' => '20px',  // Default height with unit
+        'mobile' => '',       // Optional mobile-specific height
+        'tablet' => '',       // Optional tablet-specific height
+        'class' => '',        // Optional custom classes
+    ), $atts);
+
+    // Check the height value and append 'px' if no unit is provided
+    if (preg_match('/^\d+$/', $atts['height'])) {
+        $atts['height'] .= 'px'; // Append 'px' if only a number is provided
+    }
+
+    // Generate a unique ID
+    static $spacer_id = 0;
+    $spacer_id++;
+    $unique_id = 'custom-spacer-' . $spacer_id;
+
+    // Start building the style
+    $style = "<style>
+        #$unique_id {
+            display: block;
+            width: 100%;
+            height: {$atts['height']};
+        }";
+
+    // Add responsive styles if specified
+    if ($atts['mobile'] !== '') {
+        if (preg_match('/^\d+$/', $atts['mobile'])) {
+            $atts['mobile'] .= 'px'; // Append 'px' if only a number is provided
+        }
+        $style .= "
+        @media only screen and (max-width: 767px) {
+            #$unique_id {
+                height: {$atts['mobile']};
+            }
+        }";
+    }
+
+    if ($atts['tablet'] !== '') {
+        if (preg_match('/^\d+$/', $atts['tablet'])) {
+            $atts['tablet'] .= 'px'; // Append 'px' if only a number is provided
+        }
+        $style .= "
+        @media only screen and (min-width: 768px) and (max-width: 1024px) {
+            #$unique_id {
+                height: {$atts['tablet']};
+            }
+        }";
+    }
+
+    $style .= "</style>";
+
+    // Build the HTML
+    $classes = 'custom-spacer ' . esc_attr($atts['class']);
+    $html = "<div id='$unique_id' class='$classes'></div>";
+
+    return $style . $html;
+}
+add_shortcode('spacer', 'custom_spacer_shortcode');
+?&gt;</code></pre>
+        </div>
+        <ul class="bg-gray-800 p-6 rounded-lg shadow-lg space-y-3 my-3">
+          <li class="flex items-center gap-2">✅ <span>Customizable height with automatic unit handling.</span></li>
+          <li class="flex items-center gap-2">✅ <span>Responsive spacing for mobile and tablet views.</span></li>
+          <li class="flex items-center gap-2">✅ <span>Unique ID for each spacer to prevent conflicts.</span></li>
+          <li class="flex items-center gap-2">✅ <span>Custom CSS class support for further styling.</span></li>
+          <li class="flex items-center gap-2">✅ <span>Easy shortcode usage in WordPress content.</span></li>
+          <li class="flex items-center gap-2">✅ <span>Automatic inline style injection.</span></li>
+          <li class="flex items-center gap-2">✅ <span>Optimized for performance and efficiency.</span></li>
+      </ul>
+
+      <h1 class="text-2xl font-bold my-6">Shortcode Usage</h1>
+      <div class="relative bg-gray-800 p-4 rounded-lg shadow-lg">
+          <button class="absolute top-2 right-2 bg-gray-700 text-white px-3 py-1 rounded text-sm hover:bg-gray-600" onclick="copyToClipboard('shortcode')">Copy</button>
+          <pre id="shortcode" class="overflow-auto"><code class="language-html">[spacer height="40px" mobile="20px" tablet="30px" class="custom-style"]</code></pre>
+      </div>
+      <div class="relative bg-gray-800 p-4 rounded-lg shadow-lg my-4">
+        <button class="absolute top-2 right-2 bg-gray-700 text-white px-3 py-1 rounded text-sm hover:bg-gray-600" onclick="copyToClipboard('shortcode')">Copy</button>
+        <pre id="shortcode" class="overflow-auto"><code class="language-html">[spacer height="40px"] </code></pre>
+      </div>
+        <div class="relative bg-gray-800 p-4 rounded-lg shadow-lg my-4">
+          <button class="absolute top-2 right-2 bg-gray-700 text-white px-3 py-1 rounded text-sm hover:bg-gray-600" onclick="copyToClipboard('shortcode')">Copy</button>
+          <pre id="shortcode" class="overflow-auto"><code class="language-html">[spacer height="40"] </code></pre>
+      </div>
+
+        <h1 class="text-2xl font-bold my-4">CSS Style</h1>
+
+        <div class="relative mt-6 bg-gray-800 p-4 rounded-lg shadow-lg">
+            <button class="absolute top-2 right-2 bg-gray-700 text-white px-3 py-1 rounded text-sm hover:bg-gray-600" onclick="copyToClipboard('jsCode')">Copy</button>
+            <pre id="jsCode" class="overflow-auto"><code class="language-js">
+/*Custom Spacing CSS*/
+  .custom-spacer {
+      clear: both;
+      margin: 0;
+      padding: 0;
+      border: none;
+  }
+              </code></pre>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(id) {
+            const codeBlock = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(codeBlock).then(() => {
+                alert("Copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        }
+    </script>
+</body>
+</html>
